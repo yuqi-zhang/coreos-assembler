@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+# Usage: coreos-assembler <cmd> ...
+# Currently this just wraps the two binaries we have today
+# under a global entrypoint with subcommands.
+
+cmd=${1:-}
+
+if [ -z "${cmd}" ]; then
+    echo usage: "coreos-assembler [oemid|virt-install] ..."
+    exit 1
+fi
+
+case "${cmd}" in
+    oemid|virt-install) exec "/usr/bin/coreos-${cmd}" "$@";;
+    *) echo "Unknown command: ${cmd}" 1>&2 && exit 1;;
+esac
